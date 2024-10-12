@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        #main-header {
+            background-color: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77b300 3px solid;
+        }
+        #main-header h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .option-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .option-list li {
+            padding: 10px;
+            background: #f4f4f4;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+        .option-list li:hover {
+            background: #e9e9e9;
+        }
+        .hidden {
+            display: none;
+        }
+        .button {
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Movie Ticket Booking</h1>
+        </div>
+    </header>
+    <div class="container">
+        <div class="content">
+            <div id="login-signup">
+                <h2>Login / Sign Up</h2>
+                <button class="button" onclick="showLogin()">Login</button>
+                <button class="button" onclick="showSignUp()">Sign Up</button>
+                <div id="login" class="hidden">
+                    <input type="text" id="username" placeholder="Enter Username"><br>
+                    <input type="password" id="password" placeholder="Enter Password"><br>
+                    <button class="button" onclick="login()">Login</button>
+                </div>
+                <div id="signup" class="hidden">
+                    <input type="text" id="phone" placeholder="Enter Phone Number"><br>
+                    <input type="text" id="otp" placeholder="Enter OTP"><br>
+                    <button class="button" onclick="signUp()">Sign Up</button>
+                </div>
+            </div>
+            <div id="city-selection" class="hidden">
+                <h2>Select City</h2>
+                <ul class="option-list">
+                    <li onclick="selectCity('Coimbatore')">Coimbatore</li>
+                    <li onclick="selectCity('Chennai')">Chennai</li>
+                    <li onclick="selectCity('Madurai')">Madurai</li>
+                </ul>
+            </div>
+            <div id="theater-selection" class="hidden">
+                <h2>Select Theater</h2>
+                <ul class="option-list">
+                    <li onclick="selectTheater('INOX')">INOX</li>
+                    <li onclick="selectTheater('Big Cinemas')">Big Cinemas</li>
+                    <li onclick="selectTheater('PVR')">PVR</li>
+                </ul>
+            </div>
+            <div id="movie-selection" class="hidden">
+                <h2>Select Movie</h2>
+                <ul class="option-list">
+                    <li onclick="selectMovie('Movie 1')">Movie 1</li>
+                    <li onclick="selectMovie('Movie 2')">Movie 2</li>
+                    <li onclick="selectMovie('Movie 3')">Movie 3</li>
+                </ul>
+            </div>
+            <div id="screen-selection" class="hidden">
+                <h2>Select Screen</h2>
+                <ul class="option-list">
+                    <li onclick="selectScreen('Screen 1')">Screen 1</li>
+                    <li onclick="selectScreen('Screen 2')">Screen 2</li>
+                    <li onclick="selectScreen('Screen 3')">Screen 3</li>
+                </ul>
+            </div>
+            <div id="timing-selection" class="hidden">
+                <h2>Select Timing</h2>
+                <ul class="option-list" id="timings"></ul>
+            </div>
+            <div id="food-selection" class="hidden">
+                <h2>Select Food</h2>
+                <ul class="option-list">
+                    <li onclick="selectFood('Popcorn', 'Regular', 50)">Popcorn (Regular: 50 Rs, Medium: 80 Rs, Large: 100 Rs)</li>
+                    <li onclick="selectFood('Pepsi', 'Regular', 40)">Pepsi (Regular: 40 Rs, Medium: 60 Rs, Large: 80 Rs)</li>
+                    <li onclick="selectFood('Pizza', 'Regular', 100)">Pizza (Regular: 100 Rs, Medium: 150 Rs, Large: 200 Rs)</li>
+                    <li onclick="selectFood('Salad', '', 60)">Salad (60 Rs)</li>
+                    <li onclick="selectFood('Sandwich', '', 70)">Sandwich (70 Rs)</li>
+                    <li onclick="selectFood('Nachos', '', 90)">Nachos (90 Rs)</li>
+                    <li onclick="selectFood('Coffee', '', 50)">Coffee (50 Rs)</li>
+                    <li onclick="selectFood('Ice Cream', '', 70)">Ice Cream (70 Rs)</li>
+                    <li onclick="selectFood('Burger', '', 120)">Burger (120 Rs)</li>
+                </ul>
+                <button class="button" onclick="finishFoodSelection()">Finish Food Selection</button>
+            </div>
+            <div id="seat-selection" class="hidden">
+                <h2>Select Seat</h2>
+                <div id="seats"></div>
+            </div>
+            <div id="payment" class="hidden">
+                <h2>Payment</h2>
+                <p id="total-price"></p>
+                <p>Choose Payment mode:</p>
+                <button class="button" onclick="processPayment('UPI')">UPI</button>
+                <button class="button" onclick="processPayment('Card')">Debit/Credit Card</button>
+                <button class="button" onclick="processPayment('Netbanking')">Netbanking</button>
+            </div>
+            <div id="receipt" class="hidden">
+                <h2>Ticket Receipt</h2>
+                <p id="receipt-details"></p>
+                <p>THANK YOU FOR CHOOSING US!!!</p>
+                <p>For any issues, contact our website</p>
+                <p>www.bookticket.com</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let selectedCity, selectedTheater, selectedMovie, selectedScreen, selectedTime, selectedSeat;
+        let ticketPrice = 0, foodPrice = 0, totalPrice = 0;
+        let foodSelections = [];
+
+        function showLogin() {
+            document.getElementById('login').classList.remove('hidden');
+            document.getElementById('signup').classList.add('hidden');
+        }
+
+        function showSignUp() {
+            document.getElementById('signup').classList.remove('hidden');
+            document.getElementById('login').classList.add('hidden');
+        }
+
+        function login() {
+            // For simplicity, assuming login is successful
+            alert('Login Successful');
+            document.getElementById('login-signup').classList.add('hidden');
+            document.getElementById('city-selection').classList.remove('hidden');
+        }
+
+        function signUp() {
+            // For simplicity, assuming sign-up is successful
+            alert('Sign Up Successful');
+            document.getElementById('login-signup').classList.add('hidden');
+            document.getElementById('city-selection').classList.remove('hidden');
+        }
+
+        function selectCity(city) {
+            selectedCity = city;
+            document.getElementById('city-selection').classList.add('hidden');
+            document.getElementById('theater-selection').classList.remove('hidden');
+        }
+
+        function selectTheater(theater) {
+            selectedTheater = theater;
+            document.getElementById('theater-selection').classList.add('hidden');
+            document.getElementById('movie-selection').classList.remove('hidden');
+        }
+
+        function selectMovie(movie) {
+            selectedMovie = movie;
+            document.getElementById('movie-selection').classList.add('hidden');
+            document.getElementById('screen-selection').classList.remove('hidden');
+        }
+
+        function selectScreen(screen) {
+            selectedScreen = screen;
+            document.getElementById('screen-selection').classList.add('hidden');
+            const timings = {
+                'Screen 1': ['10.00-1.00', '1.10-4.10', '4.20-7.20', '7.30-10.30'],
+                'Screen 2': ['10.15-1.15', '1.25-4.25', '4.35-7.35', '7.45-10.45'],
+                'Screen 3': ['10.30-1.30', '1.40-4.40', '4.50-7.50', '8.00-10.45']
+            };
+            const timingsList = document.getElementById('timings');
+            timingsList.innerHTML = '';
+            timings[selectedScreen].forEach((time, index) => {
+                const li = document.createElement('li');
+                li.textContent = time;
+                li.onclick = () => selectTime(time);
+                timingsList.appendChild(li);
+            });
+            document.getElementById('timing-selection').classList.remove('hidden');
+        }
+
+        function selectTime(time) {
+            selectedTime = time;
+            document.getElementById('timing-selection').classList.add('hidden');
+            const tickets = prompt('Number of tickets you want:');
+            ticketPrice = tickets * 190;
+            document.getElementById('seat-selection').classList.remove('hidden');
+            displaySeats();
+        }
+
+        function displaySeats() {
+            const seatsDiv = document.getElementById('seats');
+            seatsDiv.innerHTML = '';
+            const rows = 5;
+            const cols = 6;
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const seat = document.createElement('button');
+                    seat.textContent = `(${i + 1}, ${j + 1})`;
+                    seat.classList.add('button');
+                    seat.style.margin = '5px';
+                    seat.onclick = () => selectSeat(i + 1, j + 1);
+                    seatsDiv.appendChild(seat);
+                }
+                seatsDiv.appendChild(document.createElement('br'));
+            }
+        }
+
+        function selectSeat(row, col) {
+            selectedSeat = `Seat ${row}-${col}`;
+            document.getElementById('seat-selection').classList.add('hidden');
+            document.getElementById('food-selection').classList.remove('hidden');
+        }
+
+        function selectFood(food, size, price) {
+            foodSelections.push({ food, size, price });
+            foodPrice += price;
+        }
+
+        function finishFoodSelection() {
+            document.getElementById('food-selection').classList.add('hidden');
+            totalPrice = ticketPrice + foodPrice + 53;
+            document.getElementById('total-price').textContent = `Total price including convenience fee (53 Rs): ${totalPrice} Rs`;
+            document.getElementById('payment').classList.remove('hidden');
+        }
+
+        function processPayment(method) {
+            const pin = prompt(`Enter pin number for ${method}:`);
+            alert('PAYMENT DONE');
+            document.getElementById('payment').classList.add('hidden');
+            document.getElementById('receipt').classList.remove('hidden');
+            displayReceipt();
+        }
+
+        function displayReceipt() {
+            const receiptDetails = `
+                <p>Movie: ${selectedMovie}</p>
+                <p>Theater: ${selectedTheater}</p>
+                <p>Screen: ${selectedScreen}</p>
+                <p>Time: ${selectedTime}</p>
+                <p>Seat: ${selectedSeat}</p>
+                <p>Ticket Price: ${ticketPrice} Rs</p>
+                <p>Food Price: ${foodPrice} Rs</p>
+                <p>Total Price: ${totalPrice} Rs (including 53 Rs convenience fee)</p>
+            `;
+            document.getElementById('receipt-details').innerHTML = receiptDetails;
+        }
+    </script>
+</body>
+</html>
